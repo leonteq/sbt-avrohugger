@@ -7,9 +7,6 @@ import java.io.File
 
 import sbt.Keys._
 import sbt._
-import sbt.internal.inc.classpath.ClasspathUtilities
-import java.net.URLClassLoader
-import java.net.URL
 
 /**
  * Simple plugin for generating the Scala sources for Avro IDL, schemas and protocols.
@@ -111,12 +108,19 @@ object SbtAvrohugger extends AutoPlugin {
         isNumberOfFieldsRestricted,
         classLoader,
         scalaV)
+
       val cachedCompile = FileFunction.cached(
         cache / "avro",
-        inStyle = FilesInfo.lastModified,
+        inStyle = FilesInfo.hash,
         outStyle = FilesInfo.exists
-      ) { (in: Set[File]) => FileWriter.generateCaseClasses(gen, srcDirs, targetDir, out.log) }
-      cachedCompile((srcDirs ** "*.av*").get.toSet).toSeq
+      ) { (_: Set[File]) =>
+        //Only recompile if a change is detected on any file in the list
+        //But compile from the aggregated one
+        val aggregatedAvro = srcDirs ** "Aggregate.avdl"
+        FileWriter.generateCaseClasses(gen, aggregatedAvro.get, targetDir, out.log)
+      }
+
+      cachedCompile( (srcDirs ** "*.av*").get.toSet).toSeq
     }
   )
 }
