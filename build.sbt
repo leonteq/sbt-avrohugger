@@ -74,7 +74,7 @@ lazy val sbtavrohugger = (project in file("."))
     (Global / run / connectInput) := true,
     (Global / run / outputStrategy) := Some(StdoutOutput),
       //ThisBuild / releaseIgnoreUntrackedFiles := true
-    Release.parentReleaseSettings(Seq.empty, "sbt-avrohugger", buildRootProject = true),
+    Release.parentReleaseSettings(Seq.empty, "sbtavrohugger", buildRootProject = true),
     pomIncludeRepository := { _ => false },
     licenses := Seq("Apache 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
     homepage := Some(url(s"https://github.com/julianpeeters/${name.value}")),
