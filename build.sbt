@@ -3,7 +3,7 @@
 (Global / run / connectInput) := true
 (Global / run / outputStrategy) := Some(StdoutOutput)
 
-lazy val avrohuggerVersion = "XXX"
+lazy val avrohuggerVersion = "3.0.11-1-g32e8dd1"
 
 lazy val sbtavrohugger = (project in file("."))
   .enablePlugins(SbtPlugin, EPortalSbtSettings)
